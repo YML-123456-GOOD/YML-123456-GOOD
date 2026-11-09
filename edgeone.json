@@ -1,17 +1,3 @@
 {
-    "name": "travel-assistant",
-    "type": "agent",
-    "framework": "node",
-    "runtime": "nodejs",
-    "agents": {
-        "main": {
-            "entry": "server.js",
-            "description": "入境旅游助手",
-            "sandbox": {
-                "enabled": true,
-                "timeout": 30000,
-                "memory": 512
-            }
-        }
-    }
+    "entry": "server.js"
 }

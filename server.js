@@ -2,30 +2,24 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 
-// 中间件
+// 1.全局中间件放最前面
 app.use(cors());
 app.use(express.json());
-// 将当前目录下的静态文件（如 index.html）直接暴露给前端
-app.use(express.static(path.join(__dirname, '/')));
 
-// 核心接口：代理 DeepSeek API
+// 2.【所有API接口必须写在static静态托管之前！！】
 app.post('/api/chat', async (req, res) => {
     try {
         const { messages } = req.body;
-
         if (!messages || !Array.isArray(messages)) {
             return res.status(400).json({ error: '请求格式错误，需要包含 messages 数组' });
         }
-
         if (!DEEPSEEK_API_KEY) {
             return res.status(500).json({ error: '后端未配置 DEEPSEEK_API_KEY' });
         }
-
         // 携带后端的 Key 请求 DeepSeek
         const response = await fetch('https://api.deepseek.com/chat/completions', {
             method: 'POST',
@@ -41,7 +35,6 @@ app.post('/api/chat', async (req, res) => {
                 temperature: 0.7
             })
         });
-
         if (!response.ok) {
             const errText = await response.text();
             console.error('DeepSeek API 错误:', response.status, errText);
@@ -50,15 +43,16 @@ app.post('/api/chat', async (req, res) => {
                 details: errText.slice(0, 200)
             });
         }
-
         const data = await response.json();
         res.json(data);
-
     } catch (error) {
         console.error('服务器内部错误:', error);
         res.status(500).json({ error: '服务器处理请求时发生错误' });
     }
 });
+
+// 3.【所有接口写完之后，最后才加载静态html页面】
+app.use(express.static(path.join(__dirname, '/')));
 
 // 启动服务
 app.listen(PORT, "0.0.0.0", () => {

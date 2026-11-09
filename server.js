@@ -61,7 +61,7 @@ app.post('/api/chat', async (req, res) => {
 });
 
 // 启动服务
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`✅ 后端服务器已启动: http://localhost:${PORT}`);
-    console.log(`🔒 密钥已加载: ${DEEPSEEK_API_KEY ? '是 (安全)' : '否 (请检查 .env)'}`);
+    console.log(`🔐 密钥已加载: ${DEEPSEEK_API_KEY ? '是（安全）' : '否（请检查 .env)'}`);
 });

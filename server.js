@@ -59,9 +59,13 @@ app.post('/api/chat', async (req, res) => {
         res.status(500).json({ error: '服务器处理请求时发生错误' });
     }
 });
+// 根路径自动跳转，访问域名直接进聊天页
+app.get('/', (req, res) => {
+    res.redirect('/explorer.html');
+});
 
 // 启动服务
-app.listen(PORT, () => {
-    console.log(`✅ 后端服务器已启动: http://localhost:${PORT}`);
-    console.log(`🔒 密钥已加载: ${DEEPSEEK_API_KEY ? '是 (安全)' : '否 (请检查 .env)'}`);
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`后端服务器已启动：端口 ${PORT}`);
+    console.log(`🔐 密钥已加载：${DEEPSEEK_API_KEY ? '是（安全）' : '否（请检查 .env)'}`);
 });

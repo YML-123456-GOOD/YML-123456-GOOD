@@ -9,7 +9,12 @@ const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 app.use(cors());
 app.use(express.json());
 
-// API接口全部写在static之前
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'explorer.html'));
+});
+
+const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
+
 app.post('/api/chat', async (req, res) => {
     try {
         const { messages } = req.body;
@@ -35,7 +40,7 @@ app.post('/api/chat', async (req, res) => {
         });
         if (!response.ok) {
             const errText = await response.text();
-            console.error('DeepSeek API 错误:', response.status, errText);
+            console.error('DeepSeek API 错误：', response.status, errText);
             return res.status(response.status).json({
                 error: `DeepSeek API 错误 ${response.status}`,
                 details: errText.slice(0, 200)
@@ -44,14 +49,17 @@ app.post('/api/chat', async (req, res) => {
         const data = await response.json();
         res.json(data);
     } catch (error) {
-        console.error('服务器内部错误:', error);
+        console.error('服务器内部错误：', error);
         res.status(500).json({ error: '服务器处理请求时发生错误' });
     }
 });
 
+
+
 // 静态托管放在接口之后！！！
 app.use(express.static(path.join(__dirname, '/')));
-
+// 导出app！不要 app.listen
+module.exports = app;
 ///app.listen(PORT, "0.0.0.0", () => {
 // console.log(`✅ 后端服务器已启动: http://localhost:${PORT}`);
 //console.log(`🔐 密钥已加载: ${DEEPSEEK_API_KEY ? '是（安全）' : '否（请检查 .env)'}`);
@@ -59,4 +67,4 @@ app.use(express.static(path.join(__dirname, '/')));
 //const routes = app._router.stack.filter(layer => layer.route).map(layer => layer.route.path);
 //console.log("已注册所有路由：", routes);
 ///});
-module.exports = app;
+

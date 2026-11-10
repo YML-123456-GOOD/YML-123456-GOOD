@@ -2,13 +2,9 @@
     "version": "1.0.0",
     "type": "node",
     "entry": "server.js",
-    "static": {
-        "root": "./",
-        "index": "explorer.html"
-    },
     "routes": [
         {
-            "path": "/api/*",
+            "path": "/*",
             "target": "server"
         }
     ]

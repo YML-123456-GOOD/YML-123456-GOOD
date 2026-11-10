@@ -1,4 +1,5 @@
 {
+    "type": "node",
     "entry": "server.js",
     "routes": [
         {

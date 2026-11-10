@@ -52,11 +52,11 @@ app.post('/api/chat', async (req, res) => {
 // 静态托管放在接口之后！！！
 app.use(express.static(path.join(__dirname, '/')));
 
-app.listen(PORT, "0.0.0.0", () => {
-    console.log(`✅ 后端服务器已启动: http://localhost:${PORT}`);
-    console.log(`🔐 密钥已加载: ${DEEPSEEK_API_KEY ? '是（安全）' : '否（请检查 .env)'}`);
-    // 打印已注册路由，方便排错
-    const routes = app._router.stack.filter(layer => layer.route).map(layer => layer.route.path);
-    console.log("已注册所有路由：", routes);
-});
-
+///app.listen(PORT, "0.0.0.0", () => {
+// console.log(`✅ 后端服务器已启动: http://localhost:${PORT}`);
+//console.log(`🔐 密钥已加载: ${DEEPSEEK_API_KEY ? '是（安全）' : '否（请检查 .env)'}`);
+// 打印已注册路由，方便排错
+//const routes = app._router.stack.filter(layer => layer.route).map(layer => layer.route.path);
+//console.log("已注册所有路由：", routes);
+///});
+module.exports = app;
